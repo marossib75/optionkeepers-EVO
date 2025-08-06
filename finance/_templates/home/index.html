@@ -1,0 +1,116 @@
+{% extends "root.html" %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block style %}
+	<link async href="{% static "css/index.css" %}" rel="stylesheet" type="text/css">
+{% endblock%}
+
+{% block content %}
+	<div class="index-header bg-primary"> 
+		<div class="index-header-element">
+			<a href="{% url 'index' %}" class="text-white">PoliOp</a>
+		</div>
+	</div>
+	<div class="index text-secondary">
+		<div class="index-welcome">
+			<div class="index-welcome-text">
+				<div class="index-welcome-header">
+					<h1>Welcome to PoliOp trading platform</h1>
+				</div>
+				<div class="index-welcome-body">
+					<p>Created by exploiting many years of experience <br> of a professional trader</p>
+					<p>Built with the aim of accompanying the novice trader in the <br>learning path of financial derivatives such as options</p>
+				</div>
+				<div class="index-welcome-footer">
+					<p>Let's make it simple</p>
+				</div>
+			</div>
+			<div class="index-welcome-divider bg-secondary"/>
+		</div>
+
+		<div class="index-body">
+			<div class="index-body-welcome">
+				<h3>Sign up now</h3>
+				<snap>It's free</snap>
+			</div>
+			<form class="index-form" id="signUpForm" action="{% url 'signup' %}" method="post" enctype="multipart/form-data">
+			<fieldset disabled="disabled">
+				{% if signUpOutcome.success == False %}
+					<div class="alert alert-danger" role="alert">
+						<snap class="alert-heading">
+							<b>Oops...</b><br>
+							{{  signUpOutcome.msg  }}
+						</snap>
+					</div>
+				{% elif signUpOutcome.success == True %}
+					<div class="alert alert-success" role="alert">
+						<snap class="alert-heading">
+							<b>Well done!</b><br>
+							{{  signUpOutcome.msg  }}
+						</snap>
+					</div>
+				{% endif %}
+				<div class="index-form-group">
+					{% crispy signUpForm %}
+					<div class="form-group">
+						<label for="password">Password*</label>
+						<input type="password" class="form-control" name="password" required>
+					</div>
+					<button type="submit" class="btn btn-outline-primary mt-3 mb-3" >Sign Up</button>
+					<a href="" class="text-primary" data-toggle="modal" data-target="#indexModal">Already registered?</a>
+				</div>
+			</fieldset>
+			</form>	
+		</div>
+	</div>	
+{% endblock %}
+
+{% block modal %}
+	<div class="modal fade" id="indexModal" tabindex="-1" role="dialog" aria-labelledby="indexModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-secondary" id="modalSignInTitle">Hey, nice to see you again!</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form class="index-form text-secondary" id="signInForm" action="{% url 'signin' %}" method="post" enctype="multipart/form-data">
+						{% if signInOutcome and signInOutcome.success == False %}
+							<div class="alert alert-danger" role="alert">
+								<snap class="alert-heading">
+									<b>Oops...</b><br>{{  signInOutcome.msg  }}
+								</snap>
+							</div>
+						{% endif %}
+						<div class="index-form-group">
+							{% crispy signInForm %}
+							<div class="form-group">
+								<label for="password">Password*</label>
+								<input type="password" class="form-control" name="password" required>
+							</div>
+							<button type="submit" class="btn btn-outline-primary mt-3 mb-3" >Sign In</button>
+							<a href="{% url 'signin' %}" class="text-primary">Forgot Your Password?</a>        
+						</div>
+					</form>	
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+<script>
+//Start the DOM ready
+$( document ).ready(function() {
+	   var signin = "{{signInOutcome}}";
+
+	if (signin != "") {
+		$('#indexModal').modal('show');
+	}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en"> 
+	<head>
+		<link rel="shortcut icon" href="{% static "/img/favicon.ico" %}">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title>PoliOp{% block title %}{% endblock %}</title>
+		<link defer href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<link async href="/assets/cookieconsent/build/cookieconsent.min.css" rel="stylesheet" type="text/css"/>
+		<link async href="{% static "css/root.css" %}" rel="stylesheet" type="text/css">
+		{% block style %}
+		{% endblock%}
+	</head>
+
+	<body {% block bodyoption %}{% endblock %}>
+		<div class="root">
+			{% csrf_token %}
+			<div class="root-body" id="root">
+				{% block content %}
+				{% endblock %}
+			</div>
+			<div class="root-footer">
+				<span class="navbar-text" style="color:#000; font-size:0.8em">
+					Copyright {% now "Y" %} | FlowyGO | All rights reserved
+				</span>
+			</div>
+		</div>
+
+		{% block modal %}
+		{% endblock %}
+
+		<script src="/assets/jquery/dist/jquery.min.js"></script>
+		<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="/assets/cookieconsent/build/cookieconsent.min.js"></script>
+		<script src="{% static "js/csrfToken.js" %}"></script>
+		<script src="{% static "js/root.js" %}"></script>
+
+		{% block script %}
+		{% endblock %}
+	</body>
+</html>
